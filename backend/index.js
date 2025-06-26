@@ -16,7 +16,7 @@ initSocket(server); // 👈 call socket setup here
 
 // === Middleware ===
 app.use(cors({
-  origin: "http://172.31.30.146:1100", "https://smartdhobi.in"
+  origin: "http://172.31.30.146:1100", "https://smartdhobi.in"   //aws_private-ip
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 }));
