@@ -7,7 +7,7 @@ import {
   updateNotificationClick,
 } from "../auth/ApiConnect";
 
-const socket = io("http://localhost:4500");
+const socket = io("https://api.smartdhobi.in");
 
 const NotificationBell = ({ userId }) => {
   const [notifications, setNotifications] = useState([]);
