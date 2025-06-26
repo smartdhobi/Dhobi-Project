@@ -23,10 +23,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            echo "📦 Cleanup old containers if needed"
-        }
-    }
 }
