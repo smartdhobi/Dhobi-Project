@@ -10,9 +10,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/smartdhobi/Dhobi-Project.git', branch: 'master'
+                checkout scm
             }
         }
 
