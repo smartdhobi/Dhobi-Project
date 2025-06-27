@@ -35,10 +35,10 @@ const useNearbyVendors = () => {
       const mockDhobis = await getAllDhobis();
 
       // location on off
-      // const userLat = userLocation.coordinates[1];
-      // const userLng = userLocation.coordinates[0];
-      const userLat = 22.7227885;
-      const userLng = 75.917358;
+      const userLat = userLocation.coordinates[1];
+      const userLng = userLocation.coordinates[0];
+      // const userLat = 22.7227885;
+      // const userLng = 75.917358;
       const radiusInKm = radius / 1000;
 
       console.log("User Location:", userLat, userLng, mockDhobis);

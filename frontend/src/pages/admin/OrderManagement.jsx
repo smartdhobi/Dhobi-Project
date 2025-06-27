@@ -253,7 +253,7 @@ const OrderManagement = () => {
                 <th className="table-header-cell">Amount</th>
                 <th className="table-header-cell">Status</th>
                 <th className="table-header-cell">Date</th>
-                <th className="table-header-cell">Actions</th>
+                {/* <th className="table-header-cell">Actions</th> */}
               </tr>
             </thead>
             <tbody className="table-body">
@@ -301,7 +301,7 @@ const OrderManagement = () => {
                         {formatDate(order.date)}
                       </div>
                     </td>
-                    <td className="table-cell">
+                    {/* <td className="table-cell">
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleViewDetails(order)}
@@ -349,7 +349,7 @@ const OrderManagement = () => {
                           </div>
                         </div>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
