@@ -17,6 +17,7 @@ import {
 import axios from "axios";
 import { createRazorpayOrder } from "../../auth/ApiConnect";
 import { verifyPaymentSuccess } from "../../auth/ApiConnect";
+
 const OrderDetail = ({ order, onBack }) => {
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 
@@ -25,6 +26,16 @@ const OrderDetail = ({ order, onBack }) => {
       (sum, service) => sum + service.price * service.quantity,
       0
     ) || 0;
+
+  // Calculate total amount with 10% commission on each service
+  const totalAmountWithCommission = order?.services?.reduce(
+    (sum, service) => {
+      const serviceTotal = service.price * service.quantity;
+      const serviceWithCommission = serviceTotal + (serviceTotal * 0.1);
+      return sum + serviceWithCommission;
+    },
+    0
+  ) || 0;
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -86,11 +97,11 @@ const OrderDetail = ({ order, onBack }) => {
   const handlePayment = async () => {
     setIsPaymentProcessing(true);
     try {
-      const { razorpayOrderId, key } = await createRazorpayOrder(order);
+      const { razorpayOrderId, key } = await createRazorpayOrder(order, totalAmountWithCommission);
 
       const options = {
         key: key, // Your Razorpay Key ID
-        amount: order.amount * 100, // Amount in paise
+        amount: totalAmountWithCommission * 100, // Amount in paise
         currency: "INR",
         name: "Your Service Name",
         description: `Payment for Order #${order.orderId}`,
@@ -225,30 +236,35 @@ const OrderDetail = ({ order, onBack }) => {
             Services
           </h2>
           <div className="space-y-3">
-            {order.services.map((service, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center py-2 border-b last:border-b-0"
-              >
-                <div>
-                  <span className="font-medium capitalize">{service.name}</span>
-                  <span className="text-gray-500 ml-2">
-                    x {service.quantity}
-                  </span>
-                </div>
-                <div className="text-right">
-                  <div className="font-medium">
-                    ₹{service.price * service.quantity}
+            {order.services.map((service, index) => {
+              const serviceTotal = service.price * service.quantity;
+              const serviceWithCommission = serviceTotal + (serviceTotal * 0.1);
+              
+              return (
+                <div
+                  key={index}
+                  className="flex justify-between items-center py-2 border-b last:border-b-0"
+                >
+                  <div>
+                    <span className="font-medium capitalize">{service.name}</span>
+                    <span className="text-gray-500 ml-2">
+                      x {service.quantity}
+                    </span>
                   </div>
-                  <div className="text-sm text-gray-500">
-                    ₹{service.price} each
+                  <div className="text-right">
+                    <div className="font-medium">
+                      ₹{serviceWithCommission.toFixed(2)}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      ₹{service.price} each + 10% commission
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div className="flex justify-between items-center pt-3 border-t font-semibold text-lg">
               <span>Total Amount</span>
-              <span className="text-green-600">₹{totalAmount}</span>
+              <span className="text-green-600">₹{totalAmountWithCommission.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -306,7 +322,7 @@ const OrderDetail = ({ order, onBack }) => {
             <div className="mt-4">
               <div className="flex justify-between text-sm mb-4">
                 <span className="text-gray-500">Amount</span>
-                <span className="font-medium">₹{order.amount}</span>
+                <span className="font-medium">₹{totalAmountWithCommission.toFixed(2)}</span>
               </div>
 
               {/* Proceed to Payment Button */}

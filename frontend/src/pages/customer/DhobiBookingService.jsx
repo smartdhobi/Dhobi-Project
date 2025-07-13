@@ -63,7 +63,7 @@ export default function DhobiBookingService() {
     });
   };
 
-  const handleBookService = async (total) => {
+  const handleBookService = async (displayTotal) => {
     if (!pickupAddress.trim() || !deliveryAddress.trim()) {
       alert('Please fill in both pickup and delivery addresses');
       return;
@@ -87,12 +87,17 @@ export default function DhobiBookingService() {
         return;
       }
 
+      // Calculate original total and create services array with original prices
+      let originalTotal = 0;
       const servicesArray = Object.entries(selectedServices).map(([serviceId, quantity]) => {
         const service = dhobi.services.find(s => s._id === serviceId);
+        const originalPrice = parseInt(service.price);
+        originalTotal += originalPrice * quantity;
+        
         return {
           name: service.name,
           quantity: quantity,
-          price: parseInt(service.price)
+          price: originalPrice // Store original price, not marked-up price
         };
       });
 
@@ -106,7 +111,7 @@ export default function DhobiBookingService() {
         deliveryAddress: deliveryAddress.trim(),
         pickupTime: pickupTime || '',
         deliveryTime: deliveryTime || '',
-        amount: total.toString(),
+        amount: originalTotal.toString(), // Store original total, not marked-up total
         status: 'pending',
         paymentStatus: 'pending',
         // Include location data if available
@@ -115,6 +120,8 @@ export default function DhobiBookingService() {
       };
 
       console.log('Order Data:', orderData);
+      console.log('Display Total (with 10% markup):', displayTotal);
+      console.log('Stored Total (original prices):', originalTotal);
       
       const savedOrder = await saveOrder(orderData);
       

@@ -237,13 +237,13 @@ export const fetchNotifications = async () => {
 
 //razorpay payment
 
-export const createRazorpayOrder = async (order) => {
+export const createRazorpayOrder = async (order, totalAmountWithCommission) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_APP_BASE_URL}/orders/create-razorpay-order`,
       {
         orderId: order.orderId,
-        amount: order.amount,
+        amount: totalAmountWithCommission, // Convert to paise
       },
       {
         headers: {

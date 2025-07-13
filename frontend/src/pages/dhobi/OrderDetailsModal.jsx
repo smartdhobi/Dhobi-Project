@@ -166,6 +166,7 @@ function OrderDetailsModal() {
 
   const availableActions = getAvailableActions(order.status);
 
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="w-full mx-auto bg-white rounded-lg shadow-md p-6">
@@ -332,7 +333,7 @@ function OrderDetailsModal() {
             <div className="mt-4">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Total Amount</span>
-                <span className="font-medium">₹{order.amount}</span>
+                <span className="font-medium">₹{order.total}</span>
               </div>
             </div>
           </div>

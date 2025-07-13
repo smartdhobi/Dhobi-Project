@@ -7,6 +7,8 @@ const ServiceSelector = ({ services, selectedServices, onServiceQuantityChange }
     <div className="space-y-6">
       {services.map((service) => {
         const currentQuantity = selectedServices[service._id] || 0;
+        const originalPrice = parseInt(service.price);
+        const displayPrice = Math.round(originalPrice * 1.1); // Add 10% for display
         
         return (
           <div
@@ -20,7 +22,7 @@ const ServiceSelector = ({ services, selectedServices, onServiceQuantityChange }
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h3 className="font-medium text-gray-800 capitalize">{service.name}</h3>
-                <p className="text-lg font-semibold text-purple-600">₹{service.price}</p>
+                <p className="text-lg font-semibold text-purple-600">₹{displayPrice}</p>
               </div>
               
               <div className="flex items-center space-x-3">
@@ -53,7 +55,7 @@ const ServiceSelector = ({ services, selectedServices, onServiceQuantityChange }
               <div className="bg-white rounded p-2 text-sm">
                 <span className="text-gray-600">Subtotal: </span>
                 <span className="font-semibold text-purple-600">
-                  ₹{parseInt(service.price) * currentQuantity}
+                  ₹{displayPrice * currentQuantity}
                 </span>
               </div>
             )}

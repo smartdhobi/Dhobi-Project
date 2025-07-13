@@ -8,11 +8,24 @@ import {
   AlertCircle,
   Truck,
 } from "lucide-react";
+
 const OrderCard = ({ order, onClick }) => {
   const totalItems = order.services.reduce(
     (sum, service) => sum + service.quantity,
     0
   );
+
+  // Calculate total amount with 10% added to each service individually
+  const calculateTotalWithMarkup = () => {
+    return order.services.reduce((total, service) => {
+      const originalPrice = parseInt(service.price);
+      const markedUpPrice = Math.round(originalPrice * 1.1); // Add 10% to each service
+      return total + (markedUpPrice * service.quantity);
+    }, 0);
+  };
+
+  const fullAmount = calculateTotalWithMarkup();
+
   const getStatusColor = (status) => {
     const colors = {
       pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
@@ -56,6 +69,7 @@ const OrderCard = ({ order, onClick }) => {
       minute: "2-digit",
     });
   };
+
   return (
     <div
       onClick={() => onClick(order)}
@@ -89,7 +103,7 @@ const OrderCard = ({ order, onClick }) => {
         </div>
         <div>
           <p className="text-sm text-gray-500">Amount</p>
-          <p className="font-medium text-green-600">₹{order.amount}</p>
+          <p className="font-medium text-green-600">₹{fullAmount}</p>
         </div>
       </div>
 

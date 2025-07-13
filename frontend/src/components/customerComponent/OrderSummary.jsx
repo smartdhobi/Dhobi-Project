@@ -11,12 +11,14 @@ const OrderSummary = ({ selectedServices, services, pickupAddress, deliveryAddre
   let total = 0;
   const serviceDetails = Object.entries(selectedServices).map(([serviceId, quantity]) => {
     const service = services.find(s => s._id === serviceId);
-    const subtotal = parseInt(service.price) * quantity;
+    const originalPrice = parseInt(service.price);
+    const displayPrice = Math.round(originalPrice * 1.1); // Add 10% for display
+    const subtotal = displayPrice * quantity;
     total += subtotal;
     
     return {
       name: service.name,
-      price: service.price,
+      price: displayPrice,
       quantity,
       subtotal
     };
